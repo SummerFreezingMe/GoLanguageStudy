@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"strings"
+	"unicode"
 )
 
 func main() {
 	fmt.Println(GetCount("Success"))
 	fmt.Println(Disemvowel("Success"))
 	fmt.Println(DuplicateEncode("Success"))
+	fmt.Println(ToCamelCase("Suc_ess"))
 }
 
 // GetCount Return the number (count) of vowels in the given string.
@@ -52,4 +54,26 @@ func DuplicateEncode(word string) string {
 		}
 	}
 	return bracesString
+}
+
+// ToCamelCase Complete the method/function so that it converts dash/underscore delimited words
+// into camel casing. The first word within the output should be capitalized only if the original
+// word was capitalized (known as Upper Camel Case, also often referred to as Pascal case).
+// The next words should be always capitalized.
+func ToCamelCase(s string) string {
+	chars := []rune(s)
+	for i, char := range chars {
+		if string(char) == "_" || string(char) == "-" {
+			chars[i] = 0
+			chars[i+1] = unicode.ToUpper(chars[i+1])
+		}
+	}
+	clean := func(r rune) rune {
+		if unicode.IsPrint(r) || r == rune('\n') {
+			return r
+		}
+		return -1
+	}
+
+	return strings.Map(clean, string(chars))
 }
